@@ -6,5 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Importer extends Model
 {
-    //
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function containers()
+    {
+        return $this->hasMany(Container::class);
+    }
+
+    public function partnerships()
+    {
+        return $this->hasMany(Partnership::class);
+    }
 }
