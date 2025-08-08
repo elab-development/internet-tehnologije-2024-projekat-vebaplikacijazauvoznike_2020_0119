@@ -2,31 +2,27 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Polja koja je dozvoljeno masovno popunjavati.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Polja koja treba sakriti u JSON-u.
      */
     protected $hidden = [
         'password',
@@ -34,9 +30,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Cast-ovi.
+     * Napomena: 'password' => 'hashed' znači da NE treba ručno Hash::make() pri kreiranju.
      */
     protected function casts(): array
     {
@@ -46,7 +41,8 @@ class User extends Authenticatable
         ];
     }
 
-        public function admin()
+    // Relacije 1:1 prema Admin / Importer / Supplier
+    public function admin()
     {
         return $this->hasOne(Admin::class);
     }
@@ -60,5 +56,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(Supplier::class);
     }
-    
 }

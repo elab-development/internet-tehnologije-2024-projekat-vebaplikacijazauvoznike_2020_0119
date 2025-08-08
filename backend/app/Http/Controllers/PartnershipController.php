@@ -2,63 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partnership;
 use Illuminate\Http\Request;
 
 class PartnershipController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(
+            Partnership::with(['importer','supplier'])->paginate(10)
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'importer_id' => ['required','integer','exists:importers,id'],
+            'supplier_id' => ['required','integer','exists:suppliers,id'],
+        ]);
+
+        // unique par: importer_id + supplier_id (imamo unique u migraciji)
+        $p = Partnership::create($data);
+
+        return response()->json($p->load(['importer','supplier']), 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Partnership $partnership)
     {
-        //
+        return response()->json($partnership->load(['importer','supplier']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Partnership $partnership)
     {
-        //
+        $data = $request->validate([
+            'importer_id' => ['sometimes','integer','exists:importers,id'],
+            'supplier_id' => ['sometimes','integer','exists:suppliers,id'],
+        ]);
+
+        $partnership->update($data);
+        return response()->json($partnership->load(['importer','supplier']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Partnership $partnership)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $partnership->delete();
+        return response()->json(null, 204);
     }
 }
