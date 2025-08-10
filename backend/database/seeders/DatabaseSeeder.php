@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            CoreSeeder::class,
+            CoreSeeder::class,     
+            SampleDataSeeder::class 
         ]);
 
         User::factory()->create([
@@ -25,3 +26,5 @@ class DatabaseSeeder extends Seeder
         
     }
 }
+
+// test commit
