@@ -2,147 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ItemLog;
 use App\Models\Container;
+use App\Models\ItemLog;
 use App\Models\Product;
+use App\Models\Importer;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ItemLogController extends Controller
 {
-    // GET /api/itemlogs?container_id=&per_page=
-    public function index(Request $request)
+    /**
+     * GET /api/containers/{id}/items
+     */
+    public function index(Request $request, $id)
     {
-        $q = ItemLog::query()->with(['container','product']);
-
-        if ($request->filled('container_id')) {
-            $q->where('container_id', (int) $request->input('container_id'));
+        $container = Container::findOrFail($id);
+        if (!$this->canSee($request->user(), $container)) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $perPage = (int) $request->input('per_page', 10);
-        return response()->json($q->paginate($perPage));
+        $logs = ItemLog::with('product')
+            ->where('container_id', $container->id)
+            ->orderByDesc('logged_at')
+            ->get();
+
+        return response()->json($logs, 200);
     }
 
-    // POST /api/itemlogs  (dodavanje stavke u kontejner)
-    public function store(Request $request)
+    /**
+     * POST /api/containers/{id}/items
+     * Dozvoli importer-u vlasniku (ili admin-u).
+     * Validacije:
+     * - product_id postoji
+     * - product pripada supplieru koji je u kontejneru
+     * - quantity > 0
+     * - (opciono) update total_cost
+     */
+    public function store(Request $request, $id)
     {
+        $container = Container::findOrFail($id);
+        $user = $request->user();
+
+        if (!$this->canModify($user, $container)) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
         $data = $request->validate([
-            'container_id' => ['required','integer','exists:containers,id'],
-            'product_id'   => ['required','integer','exists:products,id'],
-            'quantity'     => ['required','integer','min:1'],
-            'logged_at'    => ['nullable','date'],
+            'product_id' => ['required','integer','exists:products,id'],
+            'quantity'   => ['required','integer','min:1'],
+            'logged_at'  => ['nullable','date'],
         ]);
 
-        $container = Container::findOrFail($data['container_id']);
-        $product   = Product::findOrFail($data['product_id']);
+        $product = Product::findOrFail($data['product_id']);
 
-        // 1) Provera supplier-a
-        if ($product->supplier_id !== $container->supplier_id) {
-            return response()->json([
-                'message' => 'Product supplier does not match container supplier.'
-            ], 422);
+        // proizvod mora pripadati istom supplieru kao i kontejner
+        if ((int)$product->supplier_id !== (int)$container->supplier_id) {
+            return response()->json(['message' => 'Product does not belong to container supplier'], 422);
         }
 
-        // 2) Provera volumena (da ne prekoračimo max_volume)
-        $currentVolume = ItemLog::where('container_id', $container->id)
-            ->join('products', 'products.id', '=', 'item_logs.product_id')
-            ->sum(DB::raw('item_logs.quantity * products.volume'));
+        $data['container_id'] = $container->id;
+        $data['logged_at']    = $data['logged_at'] ?? now();
 
-        $addedVolume = $data['quantity'] * $product->volume;
+        $log = ItemLog::create($data);
 
-        if (($currentVolume + $addedVolume) > $container->max_volume) {
-            return response()->json([
-                'message' => 'Adding this item exceeds container max_volume.',
-                'current_volume' => $currentVolume,
-                'added_volume'   => $addedVolume,
-                'max_volume'     => $container->max_volume,
-            ], 422);
+        // Re-izračunaj total_cost iz svih logova (jednostavno i sigurno)
+        $agg = ItemLog::where('container_id', $container->id)
+            ->join('products','item_logs.product_id','=','products.id')
+            ->selectRaw('sum(item_logs.quantity*products.price) as cost')
+            ->first();
+
+        $container->update(['total_cost' => (float)($agg->cost ?? 0)]);
+
+        return response()->json($log->load('product'), 201);
+    }
+
+    private function canSee($user, Container $container): bool
+    {
+        if ($user->role === 'admin') return true;
+        if ($user->role === 'importer') {
+            $impId = Importer::where('user_id', $user->id)->value('id');
+            return (int)$container->importer_id === (int)$impId;
         }
-
-        // 3) Transakcija: upis ItemLog + update total_cost
-        $itemLog = null;
-
-        DB::transaction(function () use (&$itemLog, $data, $container, $product) {
-            $itemLog = ItemLog::create([
-                'container_id' => $container->id,
-                'product_id'   => $product->id,
-                'quantity'     => $data['quantity'],
-                'logged_at'    => $data['logged_at'] ?? now(),
-            ]);
-
-            $container->update([
-                'total_cost' => $container->total_cost + ($data['quantity'] * $product->price),
-            ]);
-        });
-
-        return response()->json($itemLog->load(['container','product']), 201);
-    }
-
-    // GET /api/itemlogs/{itemLog}
-    public function show(ItemLog $itemLog)
-    {
-        return response()->json($itemLog->load(['container','product']));
-    }
-
-    // PUT/PATCH /api/itemlogs/{itemLog} (opciono ažuriranje količine)
-    public function update(Request $request, ItemLog $itemLog)
-    {
-        $data = $request->validate([
-            'quantity'  => ['sometimes','integer','min:1'],
-            'logged_at' => ['sometimes','date'],
-        ]);
-
-        // Ako menjaš quantity, moraš prilagoditi total_cost i provere volumena.
-        if (array_key_exists('quantity', $data)) {
-            $delta = $data['quantity'] - $itemLog->quantity;
-
-            if ($delta !== 0) {
-                $product   = $itemLog->product;
-                $container = $itemLog->container;
-
-                // Provera volumena sa delta
-                $currentVolume = ItemLog::where('container_id', $container->id)
-                    ->join('products', 'products.id', '=', 'item_logs.product_id')
-                    ->sum(DB::raw('item_logs.quantity * products.volume'));
-
-                $newTotalVolume = $currentVolume + ($delta * $product->volume);
-                if ($newTotalVolume > $container->max_volume) {
-                    return response()->json([
-                        'message' => 'Updating this item exceeds container max_volume.',
-                    ], 422);
-                }
-
-                DB::transaction(function () use ($itemLog, $container, $product, $delta, $data) {
-                    $itemLog->update($data);
-                    // update total_cost
-                    $container->update([
-                        'total_cost' => $container->total_cost + ($delta * $product->price),
-                    ]);
-                });
-
-                return response()->json($itemLog->fresh()->load(['container','product']));
-            }
+        if ($user->role === 'supplier') {
+            $supId = Supplier::where('user_id', $user->id)->value('id');
+            return (int)$container->supplier_id === (int)$supId;
         }
-
-        $itemLog->update($data);
-        return response()->json($itemLog->fresh()->load(['container','product']));
+        return false;
     }
 
-    // DELETE /api/itemlogs/{itemLog}
-    public function destroy(ItemLog $itemLog)
+    private function canModify($user, Container $container): bool
     {
-        DB::transaction(function () use ($itemLog) {
-            $container = $itemLog->container;
-            $product   = $itemLog->product;
-
-            // smanji total_cost kontejnera
-            $container->update([
-                'total_cost' => $container->total_cost - ($itemLog->quantity * $product->price),
-            ]);
-
-            $itemLog->delete();
-        });
-
-        return response()->json(null, 204);
+        if ($user->role === 'admin') return true;
+        if ($user->role === 'importer') {
+            $impId = Importer::where('user_id', $user->id)->value('id');
+            return (int)$container->importer_id === (int)$impId;
+        }
+        return false;
     }
 }
