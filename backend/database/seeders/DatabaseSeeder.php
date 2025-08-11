@@ -2,122 +2,102 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Models\Admin;
-use App\Models\Importer;
 use App\Models\Supplier;
+use App\Models\Importer;
 use App\Models\Product;
 use App\Models\Container;
 use App\Models\ItemLog;
-use App\Models\Partnership;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1) Admin (1 kom)
-        $adminUser = User::create([
-            'name' => 'Admin One',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('pass12345'),
-            'role' => 'admin',
-        ]);
-        Admin::create([
-            'user_id' => $adminUser->id,
-            'name'    => 'Super Admin',
-        ]);
+        // 1) Admin (po želji)
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            ['name' => 'Admin', 'password' => Hash::make('password'), 'role' => 'admin']
+        );
 
-        // 2) Importeri (3 kom) + povezani users
-        $importers = collect();
-        foreach (range(1,3) as $i) {
-            $u = User::create([
-                'name' => "Importer $i",
-                'email' => "imp{$i}@example.com",
-                'password' => Hash::make('pass12345'),
-                'role' => 'importer',
-            ]);
-            $imp = Importer::create([
-                'user_id' => $u->id,
-                'company_name' => "Importer Co $i",
-                'country' => 'Serbia',
-            ]);
-            $importers->push($imp);
-        }
-
-        // 3) Supplier-i (3 kom) + povezani users
+        // 2) 10 SUPPLIERS (svakom napravimo i user-a role=supplier)
         $suppliers = collect();
-        foreach (range(1,3) as $i) {
-            $u = User::create([
-                'name' => "Supplier $i",
-                'email' => "sup{$i}@example.com",
-                'password' => Hash::make('pass12345'),
-                'role' => 'supplier',
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::create([
+                'name'     => "SupplierUser {$i}",
+                'email'    => "supplier{$i}@example.com",
+                'password' => Hash::make('password'),
+                'role'     => 'supplier',
             ]);
-            $sup = Supplier::create([
-                'user_id' => $u->id,
-                'company_name' => "Supplier Co $i",
-                'country' => 'Serbia',
-            ]);
-            $suppliers->push($sup);
-        }
 
-        // 4) Partnership-i (svaki importer u partnerstvu sa prvim supplier-om)
-        $mainSupplier = $suppliers->first();
-        foreach ($importers as $imp) {
-            Partnership::firstOrCreate([
-                'importer_id' => $imp->id,
-                'supplier_id' => $mainSupplier->id,
+            $supplier = Supplier::factory()->create([
+                'user_id' => $user->id,
+            ]);
+
+            $suppliers->push($supplier);
+
+            // 5–15 proizvoda po dobavljaču
+            $count = random_int(5, 15);
+            Product::factory($count)->create([
+                'supplier_id' => $supplier->id,
             ]);
         }
 
-        // 5) Proizvodi (po 5 za prvog supplier-a)
-        $products = collect();
-        foreach (range(1,5) as $i) {
-            $p = Product::create([
-                'supplier_id' => $mainSupplier->id,
-                'name' => "Product $i",
-                'price' => 10 + $i,     // 11..15
-                'volume' => 1.5 + $i,   // 2.5..6.5
-                'category' => 'general',
-                'image' => null,
-                'description' => 'Seeded product',
+        // 3) 30 IMPORTERS (svakom napravimo i user-a role=importer)
+        $importers = collect();
+        for ($i = 1; $i <= 30; $i++) {
+            $user = User::create([
+                'name'     => "ImporterUser {$i}",
+                'email'    => "importer{$i}@example.com",
+                'password' => Hash::make('password'),
+                'role'     => 'importer',
             ]);
-            $products->push($p);
+
+            $importer = Importer::factory()->create([
+                'user_id' => $user->id,
+            ]);
+
+            $importers->push($importer);
         }
 
-        // 6) Container-i (po 2 za prvog importera sa prvim supplier-om)
-        $mainImporter = $importers->first();
+        // 4) KONTEJNERI (nasumično uparimo importera i supplier-a)
+        //    Pravilo: ItemLog proizvod mora pripadati ISTOM supplieru kao kontejner.
+        //    Ako tvoja tabela containers ima dodatna obavezna polja – dodaj ih ovde!
         $containers = collect();
-        foreach (range(1,2) as $i) {
-            $c = Container::create([
-                'importer_id' => $mainImporter->id,
-                'supplier_id' => $mainSupplier->id,
-                'total_cost' => 0,
-                'max_volume' => 1000,
-                'status' => 'pending',
-            ]);
-            $containers->push($c);
-        }
+        $containersToMake = 25;
 
-        // 7) ItemLog-ovi (svaki container dobije po 3 stavke)
-        foreach ($containers as $c) {
-            foreach ($products->take(3) as $p) {
+        for ($i = 1; $i <= $containersToMake; $i++) {
+            $supplier = $suppliers->random();
+            $importer = $importers->random();
+
+            $container = Container::create([
+                'supplier_id' => $supplier->id,
+                'importer_id' => $importer->id,
+                // ako imaš status/reference datume i slično, možeš ovde:
+                // 'status' => fake()->randomElement(['draft','in_transit','arrived']),
+                // 'reference' => 'CNT-' . str_pad((string)$i, 5, '0', STR_PAD_LEFT),
+            ]);
+
+            $containers->push($container);
+
+            // 5) ITEM LOGS (1–8 stavki po kontejneru), proizvodi tog supplier-a
+            $supplierProducts = Product::where('supplier_id', $supplier->id)->get();
+            $itemsCount = random_int(1, 8);
+
+            for ($j = 0; $j < $itemsCount; $j++) {
+                if ($supplierProducts->isEmpty()) break;
+
+                $product = $supplierProducts->random();
+
                 ItemLog::create([
-                    'container_id' => $c->id,
-                    'product_id' => $p->id,
-                    'quantity' => rand(5, 15),
-                    'logged_at' => now(),
+                    'container_id' => $container->id,
+                    'product_id'   => $product->id,
+                    'quantity'     => random_int(5, 200),
+                    'action'       => 'add',   // ako ti je obavezno polje
+                    // dodaj ostala polja ako tvoja tabela to traži
                 ]);
             }
-
-            // Reizračunaj total_cost kontejnera
-            $agg = ItemLog::where('container_id', $c->id)
-                ->join('products', 'item_logs.product_id', '=', 'products.id')
-                ->selectRaw('sum(item_logs.quantity*products.price) as total')
-                ->first();
-            $c->update(['total_cost' => $agg->total ?? 0]);
         }
     }
 }
