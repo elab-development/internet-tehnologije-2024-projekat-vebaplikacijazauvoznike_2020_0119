@@ -52,4 +52,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Partnerships
     Route::apiResource('partnerships', PartnershipController::class);
+
+    Route::get('/whoami', function (Illuminate\Http\Request $request) {
+    $u   = $request->user();
+    $imp = \App\Models\Importer::where('user_id', $u->id)->first();
+    $sup = \App\Models\Supplier::where('user_id', $u->id)->first();
+
+    return [
+        'user_id'      => $u->id,
+        'role'         => $u->role,
+        'importer_id'  => optional($imp)->id,
+        'supplier_id'  => optional($sup)->id,
+    ];
+});
 });
