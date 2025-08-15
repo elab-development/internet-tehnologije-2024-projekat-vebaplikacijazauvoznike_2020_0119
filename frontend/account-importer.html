@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account | Transio</title>
+    <link
+      id="dynamic-favicon"
+      rel="icon"
+      href="./images/transio_favicon_01.01.png"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/account-importer.css" />
+    <link rel="stylesheet" href="./css/intro.css" />
+    <link rel="stylesheet" href="./css/create-account.css" />
+    <link rel="stylesheet" href="./css/log-in.css" />
+  </head>
+
+  <body class="has-header">
+    <!-- Loader -->
+    <div id="loading-screen">
+      <div class="loader-content">
+        <img
+          class="loader-logotype"
+          src="./images/transio_logotype_01.01.png"
+          alt="Loading"
+        />
+        <div class="loader-line">
+          <div class="loader-line-bg"></div>
+          <div class="loader-line-progress"></div>
+        </div>
+      </div>
+      <div class="loader-text">
+        <span>Transio |</span>
+        <span> Copyright ©️ 2025<br />All rights reserved.</span>
+      </div>
+    </div>
+
+    <!-- Blobs + background -->
+    <div id="full-page-blob-container"></div>
+    <div class="page-background"></div>
+
+    <!-- Modal -->
+    <div class="notice-overlay" id="postAuthOverlay" hidden>
+      <div class="notice-modal">
+        <img
+          id="postAuthIcon"
+          class="notice-illustration"
+          src="./images/transio_image_03.04.png"
+          alt=""
+        />
+        <h2 class="notice-title" id="postAuthTitle">Delete account?</h2>
+        <p class="notice-desc" id="postAuthDesc">
+          This action will permanently remove your account and related data. Are
+          you sure you want to proceed?
+        </p>
+        <div class="notice-actions">
+          <button class="notice-cta--cancel" type="button" id="delCancel">
+            Cancel
+          </button>
+          <button class="notice-cta" type="button" id="delConfirm">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="transio-header">
+      <div class="transio-header__inner">
+        <a class="hdr-logo popfx" href="home-importer.html">
+          <img
+            src="./images/transio_logotype_01.02.png"
+            alt="Transio"
+            class="hdr-logo__img"
+          />
+        </a>
+        <nav class="hdr-actions">
+          <button class="hdr-btn hdr-btn--icon popfx" id="activityBtn">
+            <img
+              src="./images/transio_icon_04.01.png"
+              alt=""
+              class="hdr-btn__icon"
+            />
+          </button>
+          <a
+            class="hdr-btn hdr-btn--ghost popfx is-active"
+            href="account-importer.html"
+          >
+            <span class="hdr-btn__text">Account</span>
+          </a>
+          <button class="hdr-btn hdr-btn--primary popfx" id="logoutBtn">
+            <span class="hdr-btn__text hdr-btn__text--primary">Log Out</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="page-container">
+      <div class="account-wrapper">
+        <div class="account-header">
+          <img
+            src="./images/transio_customer_02.01.png"
+            alt="Importer"
+            class="account-avatar"
+          />
+          <div class="account-meta">
+            <h1 id="accCompany">Importer</h1>
+            <p>Country: <strong id="accCountry">—</strong></p>
+          </div>
+          <button id="deleteAccountBtn" class="danger-btn btn-lg">
+            Delete Account
+          </button>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn is-active" id="tabContainer">Container</button>
+          <button class="tab-btn" id="tabHistory">Order History</button>
+          <button class="tab-btn" id="tabSuppliers">Suppliers</button>
+        </div>
+
+        <section class="tab-panel" id="panelContainer" aria-hidden="false">
+          <div class="container-row">
+            <div>
+              <h3>Current Container</h3>
+              <div class="muted" id="containerMeta">
+                ID: CNT-0001 · Items: 0 · Last update: —
+              </div>
+            </div>
+            <a class="cta-primary btn-lg" href="search.html?type=products"
+              >SHOP</a
+            >
+          </div>
+          <div class="cards" id="containerItems"></div>
+        </section>
+
+        <section class="tab-panel" id="panelHistory" aria-hidden="true">
+          <h3>Order History by Containers</h3>
+          <div class="cards" id="historyList"></div>
+        </section>
+
+        <section class="tab-panel" id="panelSuppliers" aria-hidden="true">
+          <h3>Suppliers We Worked With</h3>
+          <div class="cards" id="suppliersList"></div>
+        </section>
+      </div>
+    </div>
+    <script src="./js/global.js" defer></script>
+    <script src="./js/account-importer.js" defer></script>
+    <script src="./js/home-importer.js" defer></script>
+    <script src="./js/intro.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+:root {
+  /* Fallback vrednosti ako nisu već definisane u global.css */
+  --intro-bg-color: #591fce;
+  --intro-text-color: #f3f5f7;
+}
+
+/* ===== INTRO LOADER ===== */
+body.intro-loader {
+  background: var(--intro-bg-color);
+  font-family: "Poppins", sans-serif;
+  overflow: hidden; /* zadržava overflow:hidden samo za intro page */
+  height: 100vh;
+  position: relative;
+}
+
+/* Glavni logo na intro ekranu */
+.intro-logo {
+  width: 8.75rem;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: popIn 0.6s ease-out forwards;
+  will-change: transform, opacity;
+  z-index: 10; /* iznad blobova */
+}
+
+/* Animacija pojavljivanja */
+@keyframes popIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Tekst u dnu intro stranice */
+.intro-footer {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--intro-text-color);
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1;
+  z-index: 10; /* iznad blobova */
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loading...</title>
+    <link
+      id="dynamic-favicon"
+      rel="icon"
+      href="./images/transio_favicon_01.01.png"
+    />
+    <link rel="stylesheet" href="./css/intro.css" />
+  </head>
+  <body class="intro-loader">
+    <!-- Kontejner za animirane blobove preko cele stranice -->
+    <div id="full-page-blob-container"></div>
+
+    <img
+      class="intro-logo"
+      src="./images/transio_logotype_01.02.png"
+      alt="Transio"
+    />
+    <div class="intro-footer">
+      <b>Transio</b> | Copyright ©️ 2025<br />All rights reserved.
+    </div>
+
+    <script>
+      // Dinamički favicon po temi
+      (function () {
+        const favicon = document.getElementById("dynamic-favicon");
+        if (!favicon) return;
+        const setFavicon = (isDark) => {
+          favicon.href = isDark
+            ? "./images/transio_favicon_01.02.png"
+            : "./images/transio_favicon_01.01.png";
+        };
+        const matchDark = window.matchMedia("(prefers-color-scheme: dark)");
+        setFavicon(matchDark.matches);
+        matchDark.addEventListener("change", (e) => setFavicon(e.matches));
+      })();
+
+      // Automatsko preusmeravanje nakon animacije loadera
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          window.location.href = "./choose-account.html";
+        }, 3000); // 3 sekunde za vidljivost animacije
+      });
+    </script>
+
+    <script src="./js/global.js" defer></script>
+  </body>
+</html>

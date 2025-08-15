@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Choose Account | Transio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+        <link
+      id="dynamic-favicon"
+      rel="icon"
+      href="./images/transio_favicon_01.02.png"
+    />
+    <link rel="stylesheet" href="./css/choose-account.css" />
+  </head>
+  </head>
+  <body>
+    <!-- Loader -->
+    <div id="loading-screen">
+      <div class="loader-content">
+        <img
+          class="loader-logotype"
+          src="./images/transio_logotype_01.01.png"
+          alt="Loading Logotype"
+        />
+        <div class="loader-line">
+          <div class="loader-line-bg"></div>
+          <div class="loader-line-progress"></div>
+        </div>
+      </div>
+      <div class="loader-text">
+        <span>Transio |</span
+        ><span> Copyright ©️ 2025<br />All rights reserved.</span>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="CREATE-ACCOUNT-page page-container">
+      <!-- Kontejner za animirane blobove preko cele stranice. Dodaj ovo na svaku stranicu gde želiš pozadinske blurove, OSIM na intro stranici. -->
+      <div id="full-page-blob-container"></div>
+
+      <div class="overlap-group-wrapper">
+        <div class="overlap-group">
+          <!-- Admin -->
+          <div class="card">
+            <div class="content">
+              <a class="button" href="create-account-admin.html">
+                <span class="text-wrapper"
+                  ><div class="text">Create Account</div></span
+                >
+              </a>
+              <div class="div">
+                <p class="p">
+                  <span class="span">Sign in as an admin to </span>
+                  <span class="text-wrapper-2">manage users</span>
+                  <span class="span">, </span>
+                  <span class="text-wrapper-2">access all data</span>
+                  <span class="span">, and </span>
+                  <span class="text-wrapper-2"
+                    >configure the entire system</span
+                  >
+                  <span class="span">.</span>
+                </p>
+                <div class="text-2">Admin</div>
+              </div>
+              <img
+                class="image"
+                src="./images/transio_image_02.01.png"
+                alt="Admin"
+              />
+            </div>
+          </div>
+
+          <!-- Importer -->
+          <div class="content-wrapper">
+            <div class="content">
+              <a class="button" href="create-account-importer.html">
+                <span class="text-wrapper"
+                  ><div class="text">Create Account</div></span
+                >
+              </a>
+              <div class="div">
+                <p class="p">
+                  <span class="span">Sign in as an importer to </span>
+                  <span class="text-wrapper-2"
+                    >order products from suppliers</span
+                  >
+                  <span class="span"> and </span>
+                  <span class="text-wrapper-2">track your shipments</span>
+                  <span class="span"> in real time.</span>
+                </p>
+                <div class="text-3">Importer</div>
+              </div>
+              <img
+                class="image"
+                src="./images/transio_image_02.02.png"
+                alt="Importer"
+              />
+            </div>
+          </div>
+
+          <!-- Supplier -->
+          <div class="div-wrapper">
+            <div class="content">
+              <a class="button" href="create-account-supplier.html">
+                <span class="text-wrapper"
+                  ><div class="text">Create Account</div></span
+                >
+              </a>
+              <div class="div">
+                <p class="p">
+                  <span class="span">Sign in as a supplier to </span>
+                  <span class="text-wrapper-2">add products</span>
+                  <span class="span"> and </span>
+                  <span class="text-wrapper-2">connect with importers</span>
+                  <span class="span"> for new business.</span>
+                </p>
+                <div class="text-4">Supplier</div>
+              </div>
+              <img
+                class="image"
+                src="./images/transio_image_02.03.png"
+                alt="Supplier"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/global.js" defer></script>
+    <script src="./js/choose-account.js" defer></script>
+  </body>
+</html>

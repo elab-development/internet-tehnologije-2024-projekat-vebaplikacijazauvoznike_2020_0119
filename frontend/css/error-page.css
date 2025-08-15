@@ -1,0 +1,242 @@
+/* ===== ERROR PAGE (desktop, bez skrola, sve mere u rem) ===== */
+:root {
+  --violet-800: #591fce; /* referenca pozadine (već postoji u projektu) */
+  --g50: #f3f5f7; /* jedina “bela” na ovoj stranici */
+  --accent: var(--primary-accent-color, #1b0f3a);
+}
+
+/* Jedan ekran, bez skrola — centriraj sve */
+.error-stage {
+  position: fixed;
+  inset: 0;
+  display: flex; /* centriranje cele strane */
+  justify-content: center;
+  align-items: center;
+  z-index: 0; /* ne postavljamo background ovde */
+}
+
+/* Artboard 1440×810 (90rem×50.625rem), uvek centriran */
+.ErrorPage {
+  position: relative;
+  width: 90rem; /* 1440px */
+  height: 50.625rem; /* 810px */
+  overflow: hidden;
+  transform-origin: center center; /* bilo top center */
+  display: flex;
+  justify-content: center; /* fallback centriranje unutar artboard-a */
+  align-items: center;
+}
+
+/* Skaliranje artboard-a na manjim viewportima (centralni deo) */
+@media (max-width: 90rem), (max-height: 50.625rem) {
+  .error-stage .ErrorPage {
+    --sx: calc(100vw / 90rem);
+    --sy: calc(100vh / 50.625rem);
+    --s: min(var(--sx), var(--sy));
+    transform: scale(var(--s));
+  }
+}
+
+/* --- Slojevi --- */
+.ErrorPage .bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+} /* bez boje ovde */
+
+/* 404 – ispod ključnih elemenata, iznad pozadine — tačno u centru */
+.ErrorPage .hero-404 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 1;
+  pointer-events: none;
+}
+.ErrorPage .hero-404 .digit {
+  color: var(--g50);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 31.25rem;
+  font-weight: 900;
+  line-height: 31.25rem;
+}
+.ErrorPage .hero-404 .dot {
+  width: 25rem;
+  height: 25rem;
+  border-radius: 25rem;
+  background: var(--g50);
+  box-shadow: 0 0 100px 25px var(--g50);
+}
+
+/* Donje ilustracije — centrirane po X, zalepljene za dno artboard-a */
+.ErrorPage .image01,
+.ErrorPage .image02 {
+  z-index: 2;
+}
+
+.ErrorPage .image01 {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 69.75rem;
+  height: 22.5rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.ErrorPage .image02 {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 38.75rem;
+  height: 41.25rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Full-bleed gradijenti – vezani za viewport (da idu do ivica ekrana) */
+.ErrorPage .gradient01,
+.ErrorPage .gradient02 {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  pointer-events: none;
+  z-index: 2; /* iznad slika, ispod tekstova/CTA */
+}
+
+/* visine ostaju ISTE */
+.ErrorPage .gradient01 {
+  height: 20rem;
+  background: linear-gradient(0deg, #591fce 0%, rgba(89, 31, 206, 0) 100%);
+}
+.ErrorPage .gradient02 {
+  height: 10rem;
+  background: linear-gradient(0deg, #591fce 0%, rgba(89, 31, 206, 0) 100%);
+}
+
+/* ===== Tekstovi + CTA – sve distance vezane za viewport ===== */
+/* 1) Under-text je sidro: tačno 3.12rem od donje ivice prozora */
+.ErrorPage .under {
+  position: fixed;
+  left: 50%;
+  bottom: 3.12rem;
+  transform: translateX(-50%);
+  margin: 0;
+  color: var(--g50);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 0.75rem; /* 100% */
+  letter-spacing: 0.00375rem;
+  z-index: 3;
+}
+
+/* Link kao na "Log In" (accent + underline) */
+.ErrorPage .under a {
+  color: var(--g50);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* 2) Dugme je 0.88rem iznad under-texta (3.12rem + 0.75rem + 0.88rem) */
+.ErrorPage .cta {
+  position: fixed;
+  left: 50%;
+  bottom: calc(3.12rem + 0.75rem + 0.88rem);
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26.125rem;
+  height: 2.8125rem;
+  padding: 0.97525rem 0 0.96225rem 0;
+  border-radius: 0.625rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  background: var(--g50);
+  color: var(--accent);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 0.375rem 1.875rem rgba(82, 86, 94, 0.12);
+  transition: box-shadow 0.2s ease, transform 0.08s ease, color 0.2s ease,
+    background-color 0.2s ease;
+  z-index: 3;
+}
+.ErrorPage .cta:hover {
+  box-shadow: 0 0.375rem 1.875rem rgba(243, 245, 247, 0.35);
+}
+.ErrorPage .cta:active {
+  transform: translate(-50%, 1px);
+}
+
+/* 3) Opisni tekst je 2.88rem iznad dugmeta (3.12rem + 0.75rem + 0.88rem + 2.8125rem + 2.88rem) */
+.ErrorPage .desc {
+  position: fixed;
+  left: 50%;
+  bottom: calc(3.12rem + 0.75rem + 0.88rem + 2.8125rem + 2.88rem);
+  transform: translateX(-50%);
+  width: 22.5rem;
+  margin: 0;
+  color: var(--g50);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.125rem; /* 128.571% */
+  z-index: 3;
+}
+
+/* 4) Naslovni tekst je 0.88rem iznad opisa (3.12rem + 0.75rem + 0.88rem + 2.8125rem + 2.88rem + 2.875rem + 0.88rem) */
+.ErrorPage .title {
+  position: fixed;
+  left: 50%;
+  bottom: calc(
+    3.12rem + 0.75rem + 0.88rem + 2.8125rem + 2.88rem + 2.875rem + 0.88rem
+  );
+  transform: translateX(-50%);
+  width: 22.5rem;
+  margin: 0;
+  color: var(--g50);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 2.25rem; /* 100% */
+  z-index: 3;
+}
+
+/* Logotip – 3.12rem od gornje ivice prozora */
+.ErrorPage .logotype {
+  position: fixed;
+  left: 50%;
+  top: 3.12rem;
+  transform: translateX(-50%);
+  width: 3.125rem;
+  height: 1.875rem;
+  object-fit: contain;
+  flex-shrink: 0;
+  z-index: 3;
+}
+
+/* Minimalna responsivnost – smanji 404 na užim širinama da ne presedne preko teksta */
+@media (max-width: 75rem) {
+  .ErrorPage .hero-404 .digit {
+    font-size: 22rem;
+    line-height: 22rem;
+  }
+  .ErrorPage .hero-404 .dot {
+    width: 18rem;
+    height: 18rem;
+    border-radius: 18rem;
+  }
+}
