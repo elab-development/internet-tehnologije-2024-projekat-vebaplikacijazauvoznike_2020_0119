@@ -14,10 +14,17 @@ use App\Http\Controllers\PartnershipController;
 | Public (bez autentikacije)
 |--------------------------------------------------------------------------
 */
+
+
+Route::get('/ping', function () {
+    return response()->json(['ok' => true]);
+});
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
 
 Route::get('/health', fn () => response()->json(['ok' => true]));
+Route::get('/me',        [AuthController::class, 'me'])->middleware('auth:sanctum'); 
 
 // Public pregled proizvoda
 Route::apiResource('products', ProductController::class)->only(['index','show']);
@@ -64,5 +71,9 @@ Route::middleware('auth:sanctum')->group(function () {
         'importer_id'  => optional($imp)->id,
         'supplier_id'  => optional($sup)->id,
     ];
+
+
 });
+
+
 });
