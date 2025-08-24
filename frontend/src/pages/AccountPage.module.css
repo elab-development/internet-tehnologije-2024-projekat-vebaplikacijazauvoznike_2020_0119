@@ -1,0 +1,312 @@
+.pageContainer {
+  background-color: #4338ca; /* Ljubičasta pozadina */
+  min-height: 100vh;
+  padding: 2rem;
+  padding-top: var(--content-padding-top);
+}
+
+.content {
+  background-color: white;
+  border-radius: 1.5rem;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.nav {
+  display: flex;
+  gap: 0.88rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Stil za dugmad preuzet iz HomePage.module.css */
+.nav button {
+  display: flex;
+  height: 1.875rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 160ms ease,
+    background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid var(--blur-orange);
+  background: transparent;
+  padding: 0.5rem 2rem;
+  color: var(--blur-orange);
+  font-family: Poppins, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 900;
+}
+
+.nav button.active {
+  background: var(--blur-orange);
+  border-color: var(--blur-orange);
+  box-shadow: 0 0.375rem 1.875rem rgba(255, 145, 0, 0.24);
+  color: white;
+}
+
+.nav button:hover {
+  box-shadow: 0 0.375rem 1.875rem rgba(255, 145, 0, 0.24);
+}
+
+.error {
+  color: red;
+}
+
+.containerDetails,
+.historyItem,
+.partnerItem,
+.productsTable,
+.historyList {
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.volumeTracker {
+  margin-bottom: 1rem;
+}
+.volumeTracker progress {
+  width: 100%;
+}
+
+.priceTracker {
+  margin-bottom: 1rem;
+}
+.priceTracker progress {
+  width: 100%;
+}
+
+.productCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.productCard {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.productCard h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+.productCard p {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.productCard button {
+  margin-top: 1rem;
+  align-self: flex-end; /* Align button to the right within the card */
+}
+
+.itemList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+.itemList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.footer {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.shipButton,
+.addButton {
+  padding: 0.8rem 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.historyList,
+.partnerList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.historyItem,
+.partnerItem {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.status {
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: white;
+}
+.status.pending_shipping {
+  background-color: #ffc107;
+}
+.status.shipped {
+  background-color: #17a2b8;
+}
+.status.closed {
+  background-color: #6c757d;
+}
+.status.active {
+  background-color: #6c757d; /* Grey color for active status */
+}
+
+.productsTable {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+}
+.productsTable th,
+.productsTable td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+.productsTable th {
+  background-color: #f2f2f2;
+}
+
+.actionButton {
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+.profileContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.deleteProfileButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.shipmentTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.shipmentTable th,
+.shipmentTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.shipmentTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
+
+.shipmentTable tr:nth-child(even) {
+  background-color: #fbfbfb;
+}
+
+.acceptButton {
+  background-color: var(--success-color); /* Always green */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.acceptButton:hover {
+  opacity: 0.8;
+}
+
+.actionCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shipmentHistoryContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.containerCard {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 1.25rem rgba(82, 86, 94, 0.08);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.containerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+}
+
+.containerHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--primary-text-color);
+}
+
+.containerActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  margin-top: 1rem;
+}
+
+.acceptedText {
+  color: var(--success-color);
+  font-weight: bold;
+  text-align: center;
+  display: block; /* Ensure it takes full width for centering */
+}

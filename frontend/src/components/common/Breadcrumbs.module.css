@@ -1,0 +1,22 @@
+.breadcrumbs {
+  font-size: 0.875rem;
+  font-weight: 700; /* Bold font */
+}
+
+/* Style for the separator and current page text */
+.breadcrumbs,
+.breadcrumbs span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Style for clickable links */
+.breadcrumbs a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}

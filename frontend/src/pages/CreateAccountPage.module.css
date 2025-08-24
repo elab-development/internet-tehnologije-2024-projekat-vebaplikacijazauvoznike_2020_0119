@@ -1,0 +1,99 @@
+.pageContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: transparent; /* Existing styles */
+
+.accountTypeTitle {
+  font-weight: bold;
+  color: var(--primary-accent-color);
+  margin-bottom: 0.5rem;
+}
+}
+
+.leftSection {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.rightSection {
+  width: 50%;
+  position: relative;
+  background-image: url('../assets/images/image_01.01.webp');
+  background-size: cover;
+  background-position: center;
+  border-radius: 3.125rem 0 0 3.125rem;
+  overflow: hidden;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 26.125rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.logotype {
+  width: 3.125rem;
+  height: 1.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.headerTexts {
+  margin-bottom: 2rem;
+}
+
+.welcomeText {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--secondary-accent-color);
+  margin-bottom: 1rem;
+}
+
+.subtitleText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.5;
+}
+
+.fieldsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.loginLink {
+  text-align: center;
+  font-size: 0.75rem;
+  margin-top: 0.875rem;
+}
+
+.loginLink a {
+  color: var(--primary-accent-color);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.errorContainer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.errorMessage {
+  color: #D8000C; /* Red color for errors */
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
+}

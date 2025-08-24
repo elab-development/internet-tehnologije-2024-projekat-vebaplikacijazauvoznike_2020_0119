@@ -1,0 +1,35 @@
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.blobContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1; /* Above parent background */
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(5rem); /* Reduced blur */
+  opacity: 0.5; /* Increased opacity */
+}
+
+.blob1 {
+  width: 25rem;
+  height: 25rem;
+  top: 10vh;
+  left: -10rem; /* Positioned to be more visible */
+  background-color: var(--blur-gray);
+  animation: float 35s ease-in-out infinite alternate;
+}
