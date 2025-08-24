@@ -8,6 +8,7 @@ use App\Models\Importer;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -20,7 +21,7 @@ class AuthController extends Controller
         // 1) Validacija zajedničkih polja + uloge
         $base = $request->validate([
             'role'       => 'required|in:admin,importer,supplier',
-            'name'       => 'required|string|max:255',
+            'name'       => 'required_if:role,admin|string|max:255',
             'email'      => 'required|email|unique:users,email',
             'password'   => 'required|string|min:8|confirmed', // očekuje password_confirmation
         ]);
@@ -44,7 +45,7 @@ class AuthController extends Controller
         $result = DB::transaction(function () use ($base, $extra) {
             // Kreiraj User
             $user = User::create([
-                'name'     => $base['name'],
+                'name'     => $base['role'] === 'admin' ? $base['name'] : $extra['company_name'],
                 'email'    => $base['email'],
                 'password' => Hash::make($base['password']),
                 'role'     => $base['role'],    // Uveri se da users tabela ima kolonu 'role'
@@ -119,7 +120,24 @@ class AuthController extends Controller
     // POST /api/logout (auth:sanctum)
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out'], 200);
+    }
+
+    public function deleteProfile(Request $request)
+    {
+        $user = $request->user();
+
+        // Pronalazimo povezane modele i brišemo ih (soft delete)
+        if ($user->role === 'importer') {
+            Importer::where('user_id', $user->id)->delete();
+        } elseif ($user->role === 'supplier') {
+            Supplier::where('user_id', $user->id)->delete();
+        }
+
+        // Na kraju brišemo i samog korisnika
+        $user->delete();
+
+        return response()->json(['message' => 'Profile deleted successfully'], 200);
     }
 }

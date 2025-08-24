@@ -14,8 +14,10 @@ class Container extends Model
         'supplier_id',
         'total_cost',
         'max_volume',
+        'total_volume',
+        'max_price', // Added max_price
         'status',
-]   ;
+    ];
 
     public function importer()
     {

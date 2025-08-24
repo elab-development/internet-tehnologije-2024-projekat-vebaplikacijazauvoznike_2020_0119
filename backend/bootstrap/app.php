@@ -12,7 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'is.admin' => \App\Http\Middleware\IsAdmin::class,
+            'is.supplier' => \App\Http\Middleware\IsSupplier::class,
+            'is.importer' => \App\Http\Middleware\IsImporter::class,
+        ]);
+
         $middleware->append(HandleCors::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
