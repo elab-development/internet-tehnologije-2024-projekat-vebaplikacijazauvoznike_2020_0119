@@ -1,0 +1,50 @@
+.pageContainer {
+  padding: 2rem;
+  padding-top: calc(var(--header-height) + 2rem);
+}
+.content h1 {
+  margin-bottom: 1.5rem;
+}
+.nav {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+.nav button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.nav button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.tableContainer {
+  margin-top: 1rem;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+.table th {
+  background-color: #f2f2f2;
+}
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,0 +1,82 @@
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(20px, 40px) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+.blobContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1; 
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(6rem);
+  opacity: 0.5;
+}
+
+/* --- Blobs for RIGHT section --- */
+.rightBlob1 {
+  width: 30rem;
+  height: 30rem;
+  top: -10rem;
+  left: -10rem;
+  background-color: var(--blur-purple);
+  animation: float 30s ease-in-out infinite;
+}
+
+.rightBlob2 {
+  width: 25rem;
+  height: 25rem;
+  top: 20vh;
+  right: -5rem;
+  background-color: var(--blur-blue);
+  animation: float 25s ease-in-out infinite reverse;
+}
+
+.rightBlob3 {
+  width: 20rem;
+  height: 20rem;
+  bottom: -5rem;
+  left: 10vw;
+  background-color: var(--blur-blue); /* Changed from yellow */
+  animation: float 35s ease-in-out infinite;
+}
+
+.rightBlob4 {
+    width: 28rem;
+    height: 28rem;
+    bottom: -10rem;
+    right: 5vw;
+    background-color: var(--blur-purple); /* Changed from orange */
+    animation: float 28s ease-in-out infinite reverse;
+}
+
+/* --- Blobs for LEFT section --- */
+.leftBlob1 {
+  width: 25rem;
+  height: 25rem;
+  top: 5vh;
+  left: -15rem;
+  background-color: var(--blur-purple);
+  animation: float 32s ease-in-out infinite alternate;
+}
+
+.leftBlob2 {
+  width: 20rem;
+  height: 20rem;
+  bottom: 5vh;
+  right: -10rem;
+  background-color: var(--blur-yellow);
+  animation: float 28s ease-in-out infinite;
+}

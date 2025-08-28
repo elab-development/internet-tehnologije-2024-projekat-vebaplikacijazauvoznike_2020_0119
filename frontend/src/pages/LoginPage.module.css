@@ -1,0 +1,173 @@
+.pageContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: transparent; /* Allow blobs to show through */
+}
+
+.leftSection {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  position: relative; /* Needed for z-index stacking */
+  overflow: hidden; /* Contain the blob */
+  background-color: var(--background-color); /* Added this */
+}
+
+.rightSection {
+  width: 50%;
+  position: relative;
+  background-image: url('../assets/images/image_01.01.webp'); /* Adjusted path */
+  background-size: cover;
+  background-position: center;
+  border-radius: 3.125rem 0 0 3.125rem;
+  overflow: hidden;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 26.125rem;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Ensure form is on top of blobs */
+  z-index: 2;
+}
+
+.logotype {
+  width: 3.125rem;
+  height: 1.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.headerTexts {
+  margin-bottom: 2rem;
+}
+
+.welcomeText {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--secondary-accent-color);
+  margin-bottom: 1rem;
+}
+
+.subtitleText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.5;
+}
+
+.subtitleText strong {
+  font-weight: 700;
+}
+
+.fieldsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.fieldLabel span {
+  color: var(--primary-accent-color);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: 0.625rem;
+  background: var(--background-color);
+  box-shadow: 0 0.375rem 1.875rem rgba(82, 86, 94, 0.12);
+  height: 3.1875rem;
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.inputWrapper:focus-within {
+  box-shadow: 0 0 0.5rem 0.5rem rgba(89, 31, 206, 0.05);
+}
+
+.inputWrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--secondary-accent-color);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.75rem;
+  width: 100%;
+  height: 100%;
+  padding-right: 3rem; /* Space for icons */
+}
+
+.inputWrapper input::placeholder {
+  color: var(--secondary-accent-color);
+  opacity: 0.5;
+}
+
+.inputIconGroup {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.validationIcon {
+  width: 1.125rem;
+  height: 1.125rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.validationIcon.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.passwordToggleIcon {
+  width: 1.125rem;
+  height: auto;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.fieldHint {
+  font-size: 0.75rem;
+  line-height: 1;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.loginLink {
+  text-align: center;
+  font-size: 0.75rem;
+  margin-top: 0.875rem;
+}
+
+.loginLink a {
+  color: var(--primary-accent-color);
+  font-weight: 700;
+  text-decoration: underline;
+}

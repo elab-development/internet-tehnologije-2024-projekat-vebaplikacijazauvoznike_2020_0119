@@ -1,0 +1,92 @@
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem; /* Add spacing below each input field */
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.fieldLabel span {
+  color: var(--primary-accent-color);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: 0.625rem;
+  background: var(--background-color);
+  box-shadow: 0 0.375rem 1.875rem rgba(82, 86, 94, 0.12);
+  height: 3.1875rem;
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.inputWrapper:focus-within {
+  box-shadow: 0 0 0.5rem 0.5rem rgba(89, 31, 206, 0.05);
+}
+
+.input {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--secondary-accent-color);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.75rem;
+  width: 100%;
+  height: 100%;
+  padding-right: 3rem; /* Default space for icons */
+}
+
+.input::placeholder {
+  color: var(--secondary-accent-color);
+  opacity: 0.5;
+}
+
+.iconGroup {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fieldHint {
+  font-size: 0.75rem;
+  line-height: 1;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+.validationIcon {
+  width: 1.125rem;
+  height: 1.125rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.validationIcon.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.passwordToggleIcon {
+  width: 1.125rem;
+  height: auto;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.passwordToggleIcon:hover {
+    opacity: 1;
+}

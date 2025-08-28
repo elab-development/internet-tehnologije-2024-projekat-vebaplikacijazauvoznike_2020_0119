@@ -1,0 +1,107 @@
+/* Styles for the right-hand graphic/text section */
+
+.rightSection {
+  width: 50%;
+  position: relative;
+  background-image: url("../../assets/images/image_01.01.webp");
+  background-size: cover;
+  background-position: center;
+  border-radius: 3.125rem 0 0 3.125rem;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Container for animated blobs */
+.blobContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.imageTextContainer {
+  position: absolute;
+  bottom: 5rem;
+  left: 5.87rem;
+  width: 22.5rem;
+  color: var(--White);
+  z-index: 2;
+  text-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.3);
+}
+
+.imageTextContent {
+  margin-bottom: 1rem;
+}
+
+.imageTitle {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.imageDescription {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.customerFeedbackGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.customersAvatarsGroup {
+  display: flex;
+}
+
+.avatarWrapper {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--White);
+  overflow: hidden;
+}
+
+.avatarWrapper:not(:first-child) {
+  margin-left: -0.75rem;
+}
+
+.customerAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zIndex5 { z-index: 5; }
+.zIndex4 { z-index: 4; }
+.zIndex3 { z-index: 3; }
+.zIndex2 { z-index: 2; }
+.zIndex1 { z-index: 1; }
+
+.ratingInfo {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.ratingStarsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.stars img {
+  width: 0.875rem;
+  height: auto;
+}
+
+.reviewsText {
+  margin-top: 0.25rem;
+}
